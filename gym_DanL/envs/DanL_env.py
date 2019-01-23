@@ -6,7 +6,7 @@ from gym.utils import seeding
 import numpy as np
 
 
-class CartLocation(gym.Env):
+class DanLEnv(gym.Env):
     """
 
     Observation:
