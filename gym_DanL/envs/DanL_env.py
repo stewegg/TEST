@@ -1,5 +1,4 @@
 
-
 import math
 import gym
 from gym import spaces, logger
@@ -7,7 +6,7 @@ from gym.utils import seeding
 import numpy as np
 
 
-class DanLEnv(gym.Env):
+class CartLocation(gym.Env):
     """
 
     Observation:
@@ -29,19 +28,21 @@ class DanLEnv(gym.Env):
     """
 
 
-    def __init__(self, aa, bb, cc, dd, kInput, timerInput, maxAxis):
+    def __init__(self):
 
-        self.visited=[]
-        self.xAxisSize=maxAxis
-        self.timer=timerInput
+        self.visite d =[]
+
         self.action_space = spaces.Discrete(2)
-        self.observation_space = spaces.Box(0, self.xAxisSize, dtype=np.float32)
+        self.observation_space = None
 
-        self.a = aa
-        self.b = bb
-        self.c = cc
-        self.d = dd
-        self.k = kInput
+        self.xAxisSize = 0
+        self.timer = 0
+
+        self.a = 0
+        self.b = 0
+        self.c = 0
+        self.d = 0
+        self.k = 0
 
         self.seed()
         self.viewer = None
@@ -49,6 +50,15 @@ class DanLEnv(gym.Env):
 
 
         self.steps_beyond_done = None
+    def inputParameters(self, aa, bb, cc, dd, kInput, timerInput, maxAxis):
+        self.xAxisSize = maxAxis
+        self.timer = timerInput
+        self.observation_space = spaces.Box(0, self.xAxisSize, dtype=np.float32)
+        self.a = aa
+        self.b = bb
+        self.c = cc
+        self.d = dd
+        self.k = kInput
 
     def seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
@@ -57,10 +67,10 @@ class DanLEnv(gym.Env):
     def step(self, action):
         assert self.action_space.contains(action), "%r (%s) invalid" % (action, type(action))
         state = self.state
-        A,B,C,D,k = state
+        A ,B ,C ,D ,k = state
         self.time -= 1
 
-        if(k == A):
+        i f(k == A):
             reward =1
             self.visited.append(A)
         elif (k == B):
@@ -76,24 +86,24 @@ class DanLEnv(gym.Env):
             reward = -1
         self.state = (A, B, C, D, k)
 
-        for i in range(0,len(self.visited)):
-            if(self.visited[i]==A):
-                for j in range(i+1,len(self.visited)):
-                    if(self.visited[j]==B):
+        for i in range(0, len(self.visited)):
+            if (self.visited[i] == A):
+                for j in range(i + 1, len(self.visited)):
+                    if (self.visited[j] == B):
                         for k in range(j + 1, len(self.visited)):
                             if (self.visited[k] == C):
                                 for l in range(k + 1, len(self.visited)):
                                     if (self.visited[l] == D):
-                                        done = True
+                                        done = true
 
-
-        if((A not in self.visited and B not in self.visited and C not in self.visited and D not in self.visited) or (self.timer==0)):
-            done=False
+        if ((A not in self.visited and B not in self.visited and C not in self.visited and D not in self.visited) or (
+                self.timer == 0)):
+            done = false
 
         if done:
             reward = 1.0
-        elif done==False:
-            reward=0
+        elif done == false:
+            reward = 0
         elif self.steps_beyond_done is None:
             self.steps_beyond_done = 0
             reward = 1.0
@@ -113,6 +123,7 @@ class DanLEnv(gym.Env):
 
     def render(self, mode='human'):
         return None
+
     def close(self):
         if self.viewer:
             self.viewer.close()
