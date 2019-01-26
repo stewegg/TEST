@@ -30,7 +30,7 @@ class DanLEnv(gym.Env):
 
     def __init__(self):
 
-        self.visite d =[]
+        self.visited =[]
 
         self.action_space = spaces.Discrete(2)
         self.observation_space = None
