@@ -6,7 +6,7 @@ from gym.utils import seeding
 import numpy as np
 
 
-class DanLEnv(gym.Env):
+class TestGymEnv(gym.Env):
     """
 
     Observation:
